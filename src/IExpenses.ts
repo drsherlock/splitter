@@ -1,8 +1,8 @@
-import IExpense from './IExpense';
+import IExpense from "./IExpense";
 
 interface IExpenses {
-	add: (expense: IExpense) => void;
-	show: () => void;
+  add: (expense: IExpense) => void;
+  show: () => void;
 }
 
 export default IExpenses;

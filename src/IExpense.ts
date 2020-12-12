@@ -1,6 +1,6 @@
 interface IExpense {
-	name: string;
-	split: () => Array<number>;
+  name: string;
+  split: () => Array<number>;
 }
 
 export default IExpense;

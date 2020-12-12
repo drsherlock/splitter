@@ -1,5 +1,5 @@
 interface IPerson {
-	name: string;
+  name: string;
 }
 
 export default IPerson;
