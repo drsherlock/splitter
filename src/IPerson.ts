@@ -1,5 +1,5 @@
 interface IPerson {
-  name: string;
+  readonly name: string;
 }
 
 export default IPerson;

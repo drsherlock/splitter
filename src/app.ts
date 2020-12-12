@@ -13,20 +13,18 @@ class Splitter {
     try {
       // get number of persons in group
       const userInput = await inquirer.prompt([userPrompts.NUMBER_OF_PERSONS]);
-
       const numberOfPersons: number = userInput.numberOfPersons;
 
       // get names of persons in group
-      const persons: IPerson[] = [];
+      const personsMap: Map<string, IPerson> = new Map<string, IPerson>();
       for (let i = 0; i < numberOfPersons; i++) {
         const userInput = await inquirer.prompt([userPrompts.PERSON_NAME]);
+        const personName: string = userInput.personName;
 
-        persons.push(new Person(userInput.personName));
+        personsMap.set(personName, new Person(userInput.personName));
       }
 
-      console.log(persons);
-
-      const expenses: IExpenses = new Expenses();
+      const expenses: IExpenses = new Expenses(personsMap);
 
       // get expenses
       for (;;) {
@@ -37,20 +35,34 @@ class Splitter {
         }
 
         userInput = await inquirer.prompt([userPrompts.EXPENSE_NAME]);
-
         const expenseName: string = userInput.expenseName;
 
-        userInput = await inquirer.prompt([userPrompts.EXPENSE_TYPE]);
+        userInput = await inquirer.prompt([
+          {
+            name: "paidBy",
+            type: "list",
+            message: "Who paid for this?",
+            choices: [...personsMap.keys()],
+          },
+        ]);
+        const paidBy: string = userInput.paidBy;
 
+        userInput = await inquirer.prompt([userPrompts.EXPENSE_AMOUNT]);
+        const expenseAmount: number = userInput.expenseAmount;
+
+        userInput = await inquirer.prompt([userPrompts.EXPENSE_TYPE]);
         const expenseType: string = userInput.expenseType;
 
         const expense: IExpense = ExpenseFactory.createExpense(
           expenseName,
+          paidBy,
+          expenseAmount,
           expenseType
         );
 
+        await expense.split(numberOfPersons, personsMap);
+
         expenses.add(expense);
-        console.log(userInput);
       }
 
       expenses.show();

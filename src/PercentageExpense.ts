@@ -1,13 +1,57 @@
+import inquirer from "inquirer";
+
 import IExpense from "./IExpense";
+import IPerson from "./IPerson";
 
 class PercentageExpense implements IExpense {
-  public name: string;
-  constructor(name: string) {
+  public readonly name: string;
+  public readonly paidBy: string;
+  public readonly amount: number;
+  public readonly splitMap: Map<IPerson, number>;
+  constructor(name: string, paidBy: string, amount: number) {
     this.name = name;
+    this.paidBy = paidBy;
+    this.amount = amount;
+    this.splitMap = new Map<IPerson, number>();
   }
 
-  split(): Array<number> {
-    return [];
+  /**
+   * This method will split the expense by percentage.
+   *
+   * @param numberOfPersons - Number of persons in the expense.
+   * @param personsMap - Map of persons' name to their object.
+   */
+  async split(
+    numberOfPersons: number,
+    personsMap: Map<string, IPerson>
+  ): Promise<void> {
+    let percentageSoFar = 0;
+    for (const [personName, person] of personsMap) {
+      if (this.paidBy === personName) {
+        continue;
+      }
+
+      const userInput = await inquirer.prompt([
+        {
+          name: "personPercentage",
+          type: "number",
+          message: `What percentage does ${personName} has to pay?`,
+        },
+      ]);
+      const personPercentage: number = userInput.personPercentage;
+
+      percentageSoFar += personPercentage;
+      if (percentageSoFar > 100) {
+        throw new Error("Percentage mismatch");
+      }
+
+      this.splitMap.set(person, (-personPercentage * this.amount) / 100);
+    }
+
+    this.splitMap.set(
+      personsMap.get(this.paidBy)!,
+      this.amount - (percentageSoFar * this.amount) / 100
+    );
   }
 }
 

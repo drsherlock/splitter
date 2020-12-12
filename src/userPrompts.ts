@@ -21,6 +21,11 @@ export default {
     type: "input",
     message: "Enter name of expense:",
   },
+  EXPENSE_AMOUNT: {
+    name: "expenseAmount",
+    type: "number",
+    message: "What is the amount?",
+  },
   EXPENSE_TYPE: {
     name: "expenseType",
     type: "list",

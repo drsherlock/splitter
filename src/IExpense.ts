@@ -1,6 +1,14 @@
+import IPerson from "./IPerson";
+
 interface IExpense {
-  name: string;
-  split: () => Array<number>;
+  readonly name: string;
+  readonly paidBy: string;
+  readonly amount: number;
+  readonly splitMap: Map<IPerson, number>;
+  split: (
+    numberOfPersons: number,
+    personsMap: Map<string, IPerson>
+  ) => Promise<void>;
 }
 
 export default IExpense;

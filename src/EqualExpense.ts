@@ -1,13 +1,41 @@
 import IExpense from "./IExpense";
+import IPerson from "./IPerson";
 
 class EqualExpense implements IExpense {
-  public name: string;
-  constructor(name: string) {
+  public readonly name: string;
+  public readonly paidBy: string;
+  public readonly amount: number;
+  public readonly splitMap: Map<IPerson, number>;
+  constructor(name: string, paidBy: string, amount: number) {
     this.name = name;
+    this.paidBy = paidBy;
+    this.amount = amount;
+    this.splitMap = new Map<IPerson, number>();
   }
 
-  split(): Array<number> {
-    return [];
+  /**
+   * This method will split the expense equally.
+   *
+   * @param numberOfPersons - Number of persons in the expense.
+   * @param personsMap - Map of persons' name to their object.
+   */
+  async split(
+    numberOfPersons: number,
+    personsMap: Map<string, IPerson>
+  ): Promise<void> {
+    const split: number = this.amount / numberOfPersons;
+    this.splitMap.set(
+      personsMap.get(this.paidBy)!,
+      split * (numberOfPersons - 1)
+    );
+
+    for (const [personName, person] of personsMap) {
+      if (this.paidBy === personName) {
+        continue;
+      }
+
+      this.splitMap.set(person, -split);
+    }
   }
 }
 
