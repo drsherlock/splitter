@@ -1,5 +1,5 @@
 import IExpense from "./IExpense";
-import IPerson from "./IPerson";
+import IPerson from "../Person/IPerson";
 
 class EqualExpense implements IExpense {
   public readonly name: string;

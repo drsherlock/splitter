@@ -1,4 +1,4 @@
-import IPerson from "./IPerson";
+import IPerson from "../Person/IPerson";
 
 interface IExpense {
   readonly name: string;

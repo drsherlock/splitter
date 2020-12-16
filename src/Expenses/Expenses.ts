@@ -1,7 +1,7 @@
 import IExpenses from "./IExpenses";
 import ExpenseCalculator from "./ExpenseCalculator";
-import IExpense from "./IExpense";
-import IPerson from "./IPerson";
+import IExpense from "../Expense/IExpense";
+import IPerson from "../Person/IPerson";
 
 class Expenses implements IExpenses {
   // private expensesLog: IExpenses[];

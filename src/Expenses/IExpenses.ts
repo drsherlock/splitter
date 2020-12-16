@@ -1,4 +1,4 @@
-import IExpense from "./IExpense";
+import IExpense from "../Expense/IExpense";
 
 interface IExpenses {
   add: (expense: IExpense) => void;

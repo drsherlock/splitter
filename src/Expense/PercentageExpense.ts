@@ -1,9 +1,9 @@
 import inquirer from "inquirer";
 
 import IExpense from "./IExpense";
-import IPerson from "./IPerson";
+import IPerson from "../Person/IPerson";
 
-class UnequalExpense implements IExpense {
+class PercentageExpense implements IExpense {
   public readonly name: string;
   public readonly paidBy: string;
   public readonly amount: number;
@@ -16,7 +16,7 @@ class UnequalExpense implements IExpense {
   }
 
   /**
-   * This method will split the expense unequally by amount.
+   * This method will split the expense by percentage.
    *
    * @param numberOfPersons - Number of persons in the expense.
    * @param personsMap - Map of persons' name to their object.
@@ -25,7 +25,7 @@ class UnequalExpense implements IExpense {
     numberOfPersons: number,
     personsMap: Map<string, IPerson>
   ): Promise<void> {
-    let amountSoFar = 0;
+    let percentageSoFar = 0;
     for (const [personName, person] of personsMap) {
       if (this.paidBy === personName) {
         continue;
@@ -33,23 +33,30 @@ class UnequalExpense implements IExpense {
 
       const userInput = await inquirer.prompt([
         {
-          name: "personAmount",
+          name: "personPercentage",
           type: "number",
-          message: `How much does ${personName} has to pay?`,
+          message: `What percentage does ${personName} has to pay?`,
         },
       ]);
-      const personAmount: number = userInput.personAmount;
+      const personPercentage: number = userInput.personPercentage;
 
-      amountSoFar += personAmount;
-      if (amountSoFar > this.amount) {
-        throw new Error("Amount mismatch");
+      if (!personPercentage) {
+        throw new Error("Please provide valid percentage value");
       }
 
-      this.splitMap.set(person, -personAmount);
+      percentageSoFar += personPercentage;
+      if (percentageSoFar > 100) {
+        throw new Error("Percentage mismatch");
+      }
+
+      this.splitMap.set(person, (-personPercentage * this.amount) / 100);
     }
 
-    this.splitMap.set(personsMap.get(this.paidBy)!, this.amount - amountSoFar);
+    this.splitMap.set(
+      personsMap.get(this.paidBy)!,
+      this.amount - (percentageSoFar * this.amount) / 100
+    );
   }
 }
 
-export default UnequalExpense;
+export default PercentageExpense;
