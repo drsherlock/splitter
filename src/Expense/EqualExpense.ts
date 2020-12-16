@@ -24,10 +24,6 @@ class EqualExpense implements IExpense {
     personsMap: Map<string, IPerson>
   ): Promise<void> {
     const split: number = this.amount / numberOfPersons;
-    this.splitMap.set(
-      personsMap.get(this.paidBy)!,
-      split * (numberOfPersons - 1)
-    );
 
     for (const [personName, person] of personsMap) {
       if (this.paidBy === personName) {
@@ -36,6 +32,11 @@ class EqualExpense implements IExpense {
 
       this.splitMap.set(person, -split);
     }
+
+    this.splitMap.set(
+      personsMap.get(this.paidBy)!,
+      split * (numberOfPersons - 1)
+    );
   }
 }
 

@@ -5,14 +5,19 @@ import IPerson from "../Person/IPerson";
 
 class Expenses implements IExpenses {
   // private expensesLog: IExpenses[];
-  constructor(persons: Map<string, IPerson>) {}
+  private personsLedger: Map<IPerson, number> = new Map<IPerson, number>();
+  constructor(personsMap: Map<string, IPerson>) {
+    for (const [_, person] of personsMap) {
+      this.personsLedger.set(person, 0);
+    }
+  }
 
   add(expense: IExpense): void {
-    ExpenseCalculator.calculate(expense);
+    ExpenseCalculator.calculate(this.personsLedger, expense);
   }
 
   show(): void {
-    console.log("expenses");
+    console.log(this.personsLedger);
   }
 }
 
