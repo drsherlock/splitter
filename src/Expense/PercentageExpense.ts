@@ -54,7 +54,7 @@ class PercentageExpense implements IExpense {
 
     this.splitMap.set(
       personsMap.get(this.paidBy)!,
-      this.amount - (percentageSoFar * this.amount) / 100
+      (percentageSoFar * this.amount) / 100
     );
   }
 }

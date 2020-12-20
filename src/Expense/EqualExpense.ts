@@ -23,7 +23,8 @@ class EqualExpense implements IExpense {
     numberOfPersons: number,
     personsMap: Map<string, IPerson>
   ): Promise<void> {
-    const split: number = this.amount / numberOfPersons;
+    const split: number =
+      Math.round((this.amount / numberOfPersons) * 100) / 100;
 
     for (const [personName, person] of personsMap) {
       if (this.paidBy === personName) {
