@@ -1,7 +1,6 @@
-import inquirer from "inquirer";
-
 import IExpense from "./IExpense";
 import IPerson from "../Person/IPerson";
+import * as UserPrompts from "../UserPrompts";
 
 class PercentageExpense implements IExpense {
   public readonly name: string;
@@ -23,37 +22,29 @@ class PercentageExpense implements IExpense {
    */
   async split(
     numberOfPersons: number,
-    personsMap: Map<string, IPerson>
+    personsMap: Record<string, IPerson>
   ): Promise<void> {
     let percentageSoFar = 0;
-    for (const [personName, person] of personsMap) {
+    for (const personName in personsMap) {
       if (this.paidBy === personName) {
         continue;
       }
 
-      const userInput = await inquirer.prompt([
-        {
-          name: "personPercentage",
-          type: "number",
-          message: `What percentage does ${personName} has to pay?`,
-        },
-      ]);
-      const personPercentage: number = userInput.personPercentage;
-
-      if (!personPercentage) {
-        throw new Error("Please provide valid percentage value");
-      }
+      const personPercentage: number = await UserPrompts.getPersonPercentage(
+        personName,
+        percentageSoFar
+      );
 
       percentageSoFar += personPercentage;
-      if (percentageSoFar > 100) {
-        throw new Error("Percentage mismatch");
-      }
 
-      this.splitMap.set(person, (-personPercentage * this.amount) / 100);
+      this.splitMap.set(
+        personsMap[personName],
+        (-personPercentage * this.amount) / 100
+      );
     }
 
     this.splitMap.set(
-      personsMap.get(this.paidBy)!,
+      personsMap[this.paidBy],
       (percentageSoFar * this.amount) / 100
     );
   }

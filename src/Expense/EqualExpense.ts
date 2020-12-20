@@ -21,23 +21,20 @@ class EqualExpense implements IExpense {
    */
   async split(
     numberOfPersons: number,
-    personsMap: Map<string, IPerson>
+    personsMap: Record<string, IPerson>
   ): Promise<void> {
     const split: number =
       Math.round((this.amount / numberOfPersons) * 100) / 100;
 
-    for (const [personName, person] of personsMap) {
+    for (const personName in personsMap) {
       if (this.paidBy === personName) {
         continue;
       }
 
-      this.splitMap.set(person, -split);
+      this.splitMap.set(personsMap[personName], -split);
     }
 
-    this.splitMap.set(
-      personsMap.get(this.paidBy)!,
-      split * (numberOfPersons - 1)
-    );
+    this.splitMap.set(personsMap[this.paidBy], split * (numberOfPersons - 1));
   }
 }
 

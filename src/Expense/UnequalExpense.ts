@@ -1,7 +1,6 @@
-import inquirer from "inquirer";
-
 import IExpense from "./IExpense";
 import IPerson from "../Person/IPerson";
+import * as UserPrompts from "../UserPrompts";
 
 class UnequalExpense implements IExpense {
   public readonly name: string;
@@ -23,36 +22,26 @@ class UnequalExpense implements IExpense {
    */
   async split(
     numberOfPersons: number,
-    personsMap: Map<string, IPerson>
+    personsMap: Record<string, IPerson>
   ): Promise<void> {
     let amountSoFar = 0;
-    for (const [personName, person] of personsMap) {
+    for (const personName in personsMap) {
       if (this.paidBy === personName) {
         continue;
       }
 
-      const userInput = await inquirer.prompt([
-        {
-          name: "personAmount",
-          type: "number",
-          message: `How much does ${personName} has to pay?`,
-        },
-      ]);
-      const personAmount: number = userInput.personAmount;
-
-      if (!personAmount) {
-        throw new Error("Please provide valid amount value");
-      }
+      const personAmount: number = await UserPrompts.getPersonAmount(
+        personName,
+        amountSoFar,
+        this.amount
+      );
 
       amountSoFar += personAmount;
-      if (amountSoFar > this.amount) {
-        throw new Error("Amount mismatch");
-      }
 
-      this.splitMap.set(person, -personAmount);
+      this.splitMap.set(personsMap[this.paidBy], -personAmount);
     }
 
-    this.splitMap.set(personsMap.get(this.paidBy)!, amountSoFar);
+    this.splitMap.set(personsMap[this.paidBy], amountSoFar);
   }
 }
 

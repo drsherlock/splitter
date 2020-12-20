@@ -7,7 +7,7 @@ interface IExpense {
   readonly splitMap: Map<IPerson, number>;
   split: (
     numberOfPersons: number,
-    personsMap: Map<string, IPerson>
+    personsMap: Record<string, IPerson>
   ) => Promise<void>;
 }
 

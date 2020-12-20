@@ -6,9 +6,9 @@ import IPerson from "../Person/IPerson";
 class Expenses implements IExpenses {
   // private expensesLog: IExpenses[];
   private ledger: Map<IPerson, number> = new Map<IPerson, number>();
-  constructor(personsMap: Map<string, IPerson>) {
-    for (const [_, person] of personsMap) {
-      this.ledger.set(person, 0);
+  constructor(personsMap: Record<string, IPerson>) {
+    for (const personName in personsMap) {
+      this.ledger.set(personsMap[personName], 0);
     }
   }
 
@@ -17,9 +17,12 @@ class Expenses implements IExpenses {
   }
 
   show(): void {
-    const evaluatedLedger: Array<string> = ExpenseCalculator.evaluate(this.ledger);
+    const evaluatedLedger: Array<string> = ExpenseCalculator.evaluate(
+      this.ledger
+    );
 
-    for(let i = 0; i < evaluatedLedger.length; i++) {
+    console.log(`Balances---`);
+    for (let i = 0; i < evaluatedLedger.length; i++) {
       console.log(evaluatedLedger[i]);
     }
   }
