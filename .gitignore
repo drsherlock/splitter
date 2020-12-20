@@ -3,3 +3,8 @@
 /docs
 
 yarn-error.log
+
+yarn-debug.log*
+yarn-error.log*
+
+report.*.json
