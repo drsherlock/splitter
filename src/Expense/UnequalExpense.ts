@@ -38,7 +38,7 @@ class UnequalExpense implements IExpense {
 
       amountSoFar += personAmount;
 
-      this.splitMap.set(personsMap[this.paidBy], -personAmount);
+      this.splitMap.set(personsMap[personName], -personAmount);
     }
 
     this.splitMap.set(personsMap[this.paidBy], amountSoFar);

@@ -169,8 +169,7 @@ export const getPersonPercentage = async (
       throw new Error(`Please provide valid percentage value`);
     }
 
-    percentageSoFar += personPercentage;
-    if (percentageSoFar > 100) {
+    if (percentageSoFar + personPercentage > 100) {
       throw new Error(`Percentage mismatch`);
     }
 
@@ -200,8 +199,7 @@ export const getPersonAmount = async (
       throw new Error(`Please provide valid amount value`);
     }
 
-    amountSoFar += personAmount;
-    if (amountSoFar > amount) {
+    if (amountSoFar + personAmount > amount) {
       throw new Error(`Amount mismatch`);
     }
 
