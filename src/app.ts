@@ -18,7 +18,7 @@ class Splitter {
       const expenses: IExpenses = new Expenses(personsMap);
 
       // get expenses
-      for (;;) {
+      while (1) {
         const addExpense = await UserPrompts.getAddExpense();
 
         if (!addExpense) {

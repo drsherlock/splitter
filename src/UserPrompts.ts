@@ -123,9 +123,7 @@ export const getPaidBy = async (
       choices: Object.keys(personsMap),
     },
   ]);
-  const paidBy: string = userInput.paidBy;
-
-  return paidBy;
+  return userInput.paidBy;
 };
 
 export const getExpenseAmount = async (): Promise<number> => {
@@ -146,9 +144,7 @@ export const getExpenseAmount = async (): Promise<number> => {
 
 export const getExpenseType = async (): Promise<string> => {
   const userInput = await inquirer.prompt([prompts.EXPENSE_TYPE]);
-  const expenseType: string = userInput.expenseType;
-
-  return expenseType;
+  return userInput.expenseType;
 };
 
 export const getPersonPercentage = async (

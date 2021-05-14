@@ -22,8 +22,8 @@ class Expenses implements IExpenses {
     );
 
     console.log(`Balances---`);
-    for (let i = 0; i < evaluatedLedger.length; i++) {
-      console.log(evaluatedLedger[i]);
+    for (const l of evaluatedLedger) {
+      console.log(l);
     }
   }
 }

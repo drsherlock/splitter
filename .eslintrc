@@ -14,6 +14,7 @@
   ],
   "rules": {
     '@typescript-eslint/no-non-null-assertion': 'off',
-     "quotes": ["error", "backtick"]
+     "quotes": ["error", "backtick"],
+     "no-constant-condition": ["error", { "checkLoops": false }]
   }
 }
